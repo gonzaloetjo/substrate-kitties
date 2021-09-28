@@ -122,8 +122,7 @@ pub mod pallet {
 	}
 
 	// Helper function for Kitty struct
-	// Kitty<T, T> is wrong, should be Kitty<T>.
-	impl<T: Config> Kitty<T> {
+	impl<T: Config> Kitty<T, T> {
 		pub fn gender(dna: T::Hash) -> Gender {
 			if dna.as_ref()[0] % 2 == 0 {
 				Gender::Male
@@ -155,26 +154,26 @@ pub mod pallet {
 		}
 
 		// Create new DNA with existing DNA
-		// pub fn breed_dna(kid1: &T::Hash, kid2: &T::Hash) -> Result<[u8; 16], Error<T>> {
-		// 	let dna1 = Self::kitties(kid1).ok_or(<Error<T>>::KittyNotExist)?.dna;
-		// 	let dna2 = Self::kitties(kid2).ok_or(<Error<T>>::KittyNotExist)?.dna;
+		pub fn breed_dna(kid1: &T::Hash, kid2: &T::Hash) -> Result<[u8; 16], Error<T>> {
+			let dna1 = Self::kitties(kid1).ok_or(<Error<T>>::KittyNotExist)?.dna;
+			let dna2 = Self::kitties(kid2).ok_or(<Error<T>>::KittyNotExist)?.dna;
 
-		// 	let mut new_dna = Self::gen_dna();
-		// 	for i in 0..new_dna.len() {
-		// 		new_dna[i] = (new_dna[i] & dna1[i]) | (!new_dna[i] & dna2[i]);
-		// 	}
-		// 	Ok(new_dna)
-		// }
+			let mut new_dna = Self::gen_dna();
+			for i in 0..new_dna.len() {
+				new_dna[i] = (new_dna[i] & dna1[i]) | (!new_dna[i] & dna2[i]);
+			}
+			Ok(new_dna)
+		}
 
 		// ACTION #2: Write mint function
 
 		// Helper to check correct kitty owner
-		// pub fn is_kitty_owner(kitty_id: &T::Hash, acct: &T::AccountId) -> Result<bool, Error<T>> {
-		// 	match Self::kitties(kitty_id) {
-		// 		Some(kitty) => Ok(kitty.owner == *acct),
-		// 		None => Err(<Error<T>>::KittyNotExist)
-		// 	}
-		// }
+		pub fn is_kitty_owner(kitty_id: &T::Hash, acct: &T::AccountId) -> Result<bool, Error<T>> {
+			match Self::kitties(kitty_id) {
+				Some(kitty) => Ok(kitty.owner == *acct),
+				None => Err(<Error<T>>::KittyNotExist)
+			}
+		}
 
 	// TODO Part IV: Write transfer_kitty_to
 	}
